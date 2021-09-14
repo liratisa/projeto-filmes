@@ -37,6 +37,7 @@ app.delete('/delete/:id', (request, response) => {
 
     let indice = filmes2.indexOf(filtrado);
     filmes2.splice(indice, 1);  
+    filmes.map((item, index) => item.id = index + 1); 
     
     fs.writeFile('filmes.json', JSON.stringify(filmes2), (err) => err ? console.log(err) : console.log("deu certo"));
   
