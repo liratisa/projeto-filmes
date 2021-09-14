@@ -1,5 +1,6 @@
+
 async function nome() {
-  const url = 'http://localhost:8080/todos';
+  const url = 'http://localhost:7070/todos';
   const fetchFilme = await fetch (url);
   const response = await fetchFilme.json();
 
@@ -19,7 +20,9 @@ async function nome() {
         </div>
       `
   });
+
   document.querySelectorAll(".filme").forEach(filme => filme.addEventListener("click", createRemove));
+
 
 
 }
@@ -47,6 +50,8 @@ const createRemove = (event) => {
 
     selectedMovie(event.currentTarget);
     
+    document.querySelector(".filme[data-active=true] .botao").addEventListener("click", deleteReq);
+    
     return buttonArea;
 
 }
@@ -55,5 +60,32 @@ const selectedMovie = (filme) => {
     document.querySelectorAll(".filme").forEach(nome => nome.removeAttribute('data-active'));
     filme.setAttribute('data-active', true)
 }
+
+const deleteReq = async (event) => {
+    event.preventDefault();
+
+    let filmeSelecionado = event.currentTarget.closest(".filme");
+
+    let id_filmeSelecionado = Array.from(document.querySelectorAll(".filme")).indexOf(filmeSelecionado) + 1;
+
+    console.log(id_filmeSelecionado);
+
+    let url = `http://localhost:7070/delete/${id_filmeSelecionado}`
+    await fetch(url, {
+        method: "DELETE",
+    });
+    
+    deleteMovie();
+    
+}
+
+const deleteMovie = () => {
+    document.querySelector(".filme[data-active=true]").remove();
+}
+
+
+
+
+
 
 
