@@ -27,7 +27,8 @@ app.get('/todos', (req, res) => {
     res.status(200).send(filmes);
 })
 
-const fs = require('fs')
+const fs = require('fs');
+app.use(express.json());
 
 app.delete('/delete/:id', (request, response) => {
     const idRequest = request.params.id;
@@ -41,6 +42,14 @@ app.delete('/delete/:id', (request, response) => {
     
     fs.writeFile('filmes.json', JSON.stringify(filmes2), (err) => err ? console.log(err) : console.log("deu certo"));
   
+})
+
+app.post('/add', (request, response) => {
+    const { id, titulo, descricao, poster } = request.body;
+    filmes.push({ id, titulo, descricao, poster});
+
+    fs.writeFile('./filmes.json', JSON.stringify(filmes), 'utf-8', (err) =>  err ? response.status(424).send({mensagem: err}) : console.log('deu certo'));
+        
 })
 
 app.listen(7070, () => {
